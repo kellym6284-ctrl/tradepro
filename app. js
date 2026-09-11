@@ -1,0 +1,79 @@
+let balance=10000,pnl=0,mode='deposit';
+
+const money=n=>'$'+n.toLocaleString('en-US',{
+  minimumFractionDigits:2,
+  maximumFractionDigits:2
+});
+
+function render(){
+  document.querySelector('#balance').textContent=money(balance);
+  document.querySelector('#wallet').textContent=money(balance);
+  document.querySelector('#pnl').textContent=(pnl>=0?'+':'')+money(pnl);
+}
+
+function openModal(m){
+  mode=m;
+  document.querySelector('#modal').style.display='flex';
+  document.querySelector('#modalTitle').textContent=
+    m==='deposit'?'Deposit funds':'Withdraw funds';
+  document.querySelector('#modalButton').textContent=
+    m==='deposit'?'Add demo funds':'Withdraw demo funds';
+  document.querySelector('#modalNote').textContent=
+    'Prototype only — no real money is moved.';
+}
+
+function closeModal(){
+  document.querySelector('#modal').style.display='none';
+}
+
+function submitWalletAction(){
+  let n=Number(document.querySelector('#modalAmount').value);
+
+  if(!n||n<=0)return alert('Enter a valid amount.');
+
+  if(mode==='deposit'){
+    balance+=n;
+  }else{
+    if(n>balance)return alert('Insufficient demo balance.');
+    balance-=n;
+  }
+
+  render();
+  document.querySelector('#modalAmount').value='';
+  closeModal();
+}
+
+function trade(side){
+  let n=Number(document.querySelector('#amount').value);
+
+  if(!n||n<=0)return alert('Enter a trade amount.');
+  if(n>balance)return alert('Insufficient demo balance.');
+
+  let move=(Math.random()*.02-.01)*n;
+  pnl+=move;
+
+  const row=document.createElement('div');
+  row.className='trade-item';
+
+  row.innerHTML=`
+    <span>${side} EUR/USD<br>
+    <small>${new Date().toLocaleTimeString()}</small></span>
+    <b>${move>=0?'+':''}${money(move)}</b>
+  `;
+
+  let box=document.querySelector('#trades');
+
+  if(box.querySelector('.muted')){
+    box.innerHTML='';
+  }
+
+  box.prepend(row);
+  render();
+}
+
+setInterval(()=>{
+  let p=1.10842+(Math.random()-.5)*.0015;
+  document.querySelector('#price').textContent=p.toFixed(5);
+},1500);
+
+render();
