@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TradePro — Trading Dashboard</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="brand">Trade<span>Pro</span></div>
+  <div class="balance">Demo Balance: <b id="balance">$10,000.00</b></div>
+</header>
+
+<main>
+  <section class="hero">
+    <div>
+      <h1>Trade smarter.</h1>
+      <p>Practice trading with a clean dashboard before connecting real payment and broker infrastructure.</p>
+    </div>
+    <div class="actions">
+      <button class="deposit" onclick="openModal('deposit')">Deposit</button>
+      <button class="withdraw" onclick="openModal('withdraw')">Withdraw</button>
+    </div>
+  </section>
+
+  <section class="grid">
+    <div class="card chart-card">
+      <div class="card-head">
+        <h2>EUR/USD</h2>
+        <span class="price" id="price">1.10842</span>
+      </div>
+      <div class="chart" id="chart"></div>
+      <div class="trade-row">
+        <input id="amount" type="number" min="1" value="100">
+        <button class="buy" onclick="trade('BUY')">BUY</button>
+        <button class="sell" onclick="trade('SELL')">SELL</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Wallet</h2>
+      <div class="stat"><span>Available</span><b id="wallet">$10,000.00</b></div>
+      <div class="stat"><span>Today's P/L</span><b class="positive" id="pnl">+$0.00</b></div>
+      <hr>
+      <button class="wide" onclick="openModal('deposit')">Add funds</button>
+      <button class="wide outline" onclick="openModal('withdraw')">Request withdrawal</button>
+    </div>
+
+    <div class="card">
+      <h2>Recent trades</h2>
+      <div id="trades" class="trades"><p class="muted">No trades yet.</p></div>
+    </div>
+  </section>
+</main>
+
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <button class="close" onclick="closeModal()">×</button>
+    <h2 id="modalTitle">Deposit</h2>
+    <p id="modalNote">Prototype only — no real money is moved.</p>
+    <input id="modalAmount" type="number" min="1" placeholder="Amount USD">
+    <button class="wide deposit" id="modalButton" onclick="submitWalletAction()">Continue</button>
+  </div>
+</div>
+
+<footer>TradePro Prototype • Real-money payments are not connected</footer>
+<script src="app.js"></script>
+</body>
+</html>
